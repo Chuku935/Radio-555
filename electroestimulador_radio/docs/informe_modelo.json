@@ -1,0 +1,51 @@
+{
+ "interferencias_mm3": {
+  "Radio_caja x Protoboard_ref": 0.004
+ },
+ "contactos_previstos_mm3": {},
+ "agarre_cordon_mm": 0.4,
+ "perilla_vs_caja_mm": 0.25,
+ "proto_vs_potenciometros_mm": 46.5,
+ "proto_vs_tapa_mm": 0.3,
+ "patilla": {
+  "largo": 22.2,
+  "flecha": 0.9,
+  "deformacion_pct": 0.49
+ },
+ "fabricacion": {
+  "Radio_caja": {
+   "medidas": [
+    180.0,
+    124.0,
+    69.6
+   ],
+   "cabe_en_cama": true,
+   "volumen_cm3": 165.2,
+   "manifold": true,
+   "cuerpos": 1,
+   "area_voladizo_mm2": 2698.4,
+   "puentes_mm2_por_altura": {
+    "1.0": 2694.8,
+    "6.0": 0.7,
+    "15.100000381469727": 2.4,
+    "24.799999237060547": 0.5
+   }
+  },
+  "Radio_tapa": {
+   "medidas": [
+    180.0,
+    107.0,
+    21.2
+   ],
+   "cabe_en_cama": true,
+   "volumen_cm3": 51.8,
+   "manifold": true,
+   "cuerpos": 1,
+   "area_voladizo_mm2": 15.4,
+   "puentes_mm2_por_altura": {
+    "0.6000000238418579": 13.4,
+    "2.5": 2.0
+   }
+  }
+ }
+}

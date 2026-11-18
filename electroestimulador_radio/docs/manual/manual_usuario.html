@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<title>Manual RADIO-555</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Oswald:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&display=swap">
+<style>
+/* Layout: tres pliegos de diario de 1964 sobre una mesa oscura — portada, instrucciones y anuncios. Un solo aspecto (papel prensa), sin tema oscuro. */
+:root {
+  --desk: #2d2a26;
+  --paper: #ebe5d3;
+  --paper-2: #e0d9c4;
+  --ink: #191612;
+  --ink-soft: #423c33;
+  --f-mast: "Anton", "Impact", "Arial Narrow Bold", sans-serif;
+  --f-head: "Playfair Display", "Georgia", "Times New Roman", serif;
+  --f-body: "Old Standard TT", "Georgia", "Times New Roman", serif;
+  --f-label: "Oswald", "Arial Narrow", "Helvetica Neue", sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--desk); color: var(--ink); font-family: var(--f-body); font-size: 15.5px; line-height: 1.42; }
+img { max-width: 100%; height: auto; display: block; }
+.desk {
+  padding-block: 28px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 28px; justify-items: center;
+}
+.sheet {
+  width: 100%; max-width: 1080px; background-color: var(--paper); color: var(--ink);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .1 0 0 0 0 .09 0 0 0 0 .07 0 0 0 .11 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
+  padding: clamp(16px, 3vw, 34px);
+  box-shadow: 0 2px 0 rgba(0,0,0,.25), 0 14px 34px rgba(0,0,0,.45);
+  display: grid; gap: 16px;
+}
+p { margin: 0 0 .65em; }
+p:last-child { margin-bottom: 0; }
+.txt { text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
+.cols2 { columns: 2; column-gap: 22px; column-rule: 1px solid var(--ink); }
+.dropcap::first-letter { font-family: var(--f-head); font-weight: 900; font-size: 3.5em; line-height: .8; float: left; padding: .06em .08em 0 0; }
+
+/* ---- cabecera ---- */
+.mast { text-align: center; display: grid; gap: 4px; }
+.mast h1 { font-family: var(--f-mast); font-weight: 400; font-size: clamp(44px, 11.6vw, 132px); line-height: .98; margin: 0; text-transform: uppercase; letter-spacing: .012em; }
+.mast .lema { font-family: var(--f-head); font-style: italic; font-size: clamp(14px, 1.8vw, 19px); }
+.dateline { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 18px; border-top: 3px solid var(--ink); border-bottom: 1px solid var(--ink); padding: 5px 2px; font-family: var(--f-label); font-size: 12.5px; letter-spacing: .09em; text-transform: uppercase; }
+.dateline::after { content: ""; }
+.dateline b { font-weight: 600; }
+.folio { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 18px; border-bottom: 3px double var(--ink); padding-bottom: 6px; font-family: var(--f-label); font-size: 12.5px; letter-spacing: .09em; text-transform: uppercase; }
+.folio .name { font-family: var(--f-mast); font-size: 22px; letter-spacing: .03em; }
+
+/* ---- titulares ---- */
+.kicker { font-family: var(--f-label); font-weight: 600; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; margin: 0 0 4px; }
+.h-sans { font-family: var(--f-mast); font-weight: 400; text-transform: uppercase; line-height: 1.02; margin: 0 0 8px; letter-spacing: .01em; text-wrap: balance; }
+.h-serif { font-family: var(--f-head); font-weight: 900; line-height: 1.08; margin: 0 0 8px; text-wrap: balance; }
+.deck { font-family: var(--f-head); font-style: italic; font-size: 18px; line-height: 1.3; margin: 0 0 10px; text-wrap: balance; }
+.h-xl { font-size: clamp(30px, 4.6vw, 52px); }
+.h-l { font-size: clamp(24px, 3vw, 34px); }
+.h-m { font-size: 21px; }
+.h-s { font-size: 17px; }
+.banner { font-family: var(--f-mast); text-transform: uppercase; text-align: center; font-size: clamp(26px, 4.4vw, 46px); line-height: 1; margin: 0; padding: 8px 0 6px; border-block: 1px solid var(--ink); letter-spacing: .04em; }
+
+/* ---- rejillas ---- */
+.front { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.7fr); gap: 22px; }
+.briefs { display: grid; gap: 12px; align-content: start; border-right: 1px solid var(--ink); padding-right: 22px; }
+.brief { border-bottom: 1px solid var(--ink); padding-bottom: 12px; }
+.brief:last-child { border-bottom: 0; padding-bottom: 0; }
+.brief .h-serif { text-align: center; text-transform: uppercase; font-size: 15.5px; letter-spacing: .02em; }
+.lead { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.row4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; border-top: 3px double var(--ink); padding-top: 16px; }
+.box { border: 1px solid var(--ink); padding: 12px; min-width: 0; }
+.box.fill { background: var(--paper-2); }
+.box.heavy { border: 3px solid var(--ink); }
+.split { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 22px; }
+.split > * { min-width: 0; }
+.split .rule-l { border-left: 1px solid var(--ink); padding-left: 22px; }
+.row3 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr); gap: 22px; border-top: 3px double var(--ink); padding-top: 16px; }
+.row3 > * { min-width: 0; }
+.row3 > * + * { border-left: 1px solid var(--ink); padding-left: 22px; }
+.p3 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr); gap: 22px; }
+.p3 > * { min-width: 0; }
+
+/* ---- fotos ---- */
+figure { margin: 0; }
+.photo { position: relative; border: 1px solid var(--ink); background: #ecebe6; overflow: hidden; }
+.photo img { width: 100%; filter: sepia(.18) contrast(1.05); }
+.photo::after { content: ""; position: absolute; inset: 0; pointer-events: none; mix-blend-mode: multiply; background-image: radial-gradient(circle, rgba(25,22,18,.34) .55px, transparent .95px); background-size: 3px 3px; }
+figcaption { font-family: var(--f-body); font-style: italic; font-size: 13.5px; line-height: 1.3; padding-top: 5px; }
+figcaption b { font-family: var(--f-label); font-style: normal; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; font-size: 12px; }
+.plate { border: 1px solid var(--ink); background: var(--paper); overflow-x: auto; }
+.plate svg { display: block; width: 100%; height: auto; }
+.plate.wide svg { min-width: 540px; }
+svg .ink { stroke: var(--ink); fill: none; stroke-linecap: round; stroke-linejoin: round; }
+svg .pp { fill: var(--paper); }
+svg .solid { fill: var(--ink); }
+svg text { fill: var(--ink); font-family: var(--f-label); }
+svg .t1 { font-size: 13px; font-weight: 600; letter-spacing: .06em; }
+svg .t2 { font-family: var(--f-body); font-style: italic; font-size: 12px; }
+svg .tb { fill: var(--paper); font-size: 11px; font-weight: 600; }
+
+/* ---- listas y tablas ---- */
+ol.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; display: grid; gap: 9px; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 10px; align-items: start; }
+ol.steps li::before { content: counter(s); font-family: var(--f-mast); font-size: 30px; line-height: 1; text-align: center; border: 2px solid var(--ink); border-radius: 50%; width: 34px; height: 34px; display: grid; place-items: center; padding-top: 1px; }
+ul.plain { margin: 0; padding-left: 18px; display: grid; gap: 3px; }
+dl.legend { margin: 8px 0 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 3px 10px; font-size: 14.5px; }
+dl.legend dt { font-family: var(--f-label); font-weight: 600; letter-spacing: .05em; }
+dl.legend dd { margin: 0; }
+table.ficha { width: 100%; border-collapse: collapse; font-size: 14px; }
+table.ficha th, table.ficha td { text-align: left; vertical-align: top; padding: 4px 0; border-bottom: 1px dotted var(--ink); }
+table.ficha tr:last-child th, table.ficha tr:last-child td { border-bottom: 0; }
+table.ficha th { font-family: var(--f-label); font-weight: 500; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; padding-right: 10px; width: 42%; }
+table.ficha td { font-variant-numeric: tabular-nums; }
+.aviso h3 { font-family: var(--f-mast); font-weight: 400; text-transform: uppercase; font-size: 24px; text-align: center; margin: 0 0 6px; letter-spacing: .04em; }
+.aviso p { font-size: 14.5px; }
+.qa { display: grid; gap: 12px; }
+.qa .q { font-family: var(--f-head); font-weight: 700; font-style: italic; margin: 0 0 2px; }
+.qa .sig { font-family: var(--f-label); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; }
+.clasif { display: grid; gap: 0; border: 1px solid var(--ink); }
+.clasif h4 { margin: 0; font-family: var(--f-label); font-weight: 600; letter-spacing: .2em; text-transform: uppercase; text-align: center; font-size: 13px; background: var(--ink); color: var(--paper); padding: 3px; }
+.clasif p { margin: 0; padding: 7px 9px; font-size: 13.5px; line-height: 1.3; border-top: 1px solid var(--ink); }
+.clasif p b { font-family: var(--f-label); letter-spacing: .05em; }
+
+/* ---- anuncio ---- */
+.ad { border: 5px double var(--ink); padding: clamp(12px, 2.2vw, 22px); display: grid; gap: 12px; background: var(--paper); }
+.ad .pub { font-family: var(--f-label); font-size: 10.5px; letter-spacing: .3em; text-transform: uppercase; text-align: center; }
+.ad .cry { font-family: var(--f-head); font-style: italic; font-weight: 700; font-size: clamp(20px, 2.8vw, 30px); text-align: center; line-height: 1.12; margin: 0; text-wrap: balance; }
+.ad .brand { font-family: var(--f-mast); font-size: clamp(38px, 6.6vw, 78px); line-height: .95; text-align: center; text-transform: uppercase; margin: 0; letter-spacing: .015em; }
+.ad .brand small { display: block; font-family: var(--f-label); font-weight: 500; font-size: clamp(13px, 1.5vw, 17px); letter-spacing: .34em; margin-top: 6px; }
+.ad .sub { text-align: center; font-size: 17px; margin: 0; text-wrap: balance; }
+.ad-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+.ad-grid > * { min-width: 0; }
+ul.stars { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; font-size: 15px; }
+ul.stars li { display: grid; grid-template-columns: 18px minmax(0, 1fr); }
+ul.stars li::before { content: "★"; font-size: 12px; padding-top: 2px; }
+ul.stars b { font-family: var(--f-label); font-weight: 600; letter-spacing: .03em; }
+.offer { background: var(--ink); color: var(--paper); padding: 14px 16px; text-align: center; display: grid; gap: 4px; }
+.offer .tag { font-family: var(--f-label); font-weight: 600; letter-spacing: .3em; font-size: 12px; text-transform: uppercase; }
+.offer .big { font-family: var(--f-mast); font-size: clamp(30px, 4.6vw, 50px); line-height: 1; text-transform: uppercase; letter-spacing: .02em; }
+.offer .with { font-family: var(--f-head); font-style: italic; font-size: 17px; line-height: 1.25; }
+.coupon { border: 2px dashed var(--ink); padding: 10px 12px; display: grid; gap: 6px; font-size: 14px; position: relative; }
+.coupon::before { content: "✂"; position: absolute; top: -13px; left: 14px; background: var(--paper); padding: 0 5px; font-size: 16px; }
+.coupon .c-title { font-family: var(--f-label); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; font-size: 13px; }
+.coupon .line { display: flex; gap: 8px; align-items: flex-end; font-family: var(--f-label); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.coupon .line i { flex: 1; border-bottom: 1px solid var(--ink); height: 16px; }
+.fine { font-size: 12.5px; font-style: italic; text-align: center; margin: 0; }
+.tiny { font-size: 8.5px; line-height: 1.3; text-align: center; margin: 0; letter-spacing: .02em; }
+.colofon { border-top: 1px solid var(--ink); padding-top: 6px; font-family: var(--f-label); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; text-align: center; }
+
+.p4 { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 22px; }
+.p4 > * { min-width: 0; display: grid; gap: 16px; align-content: start; }
+.p4 > * + * { border-left: 1px solid var(--ink); padding-left: 22px; }
+.sopa { border-collapse: collapse; width: 100%; max-width: 348px; margin: 8px auto; table-layout: fixed; font-family: var(--f-label); font-weight: 500; font-size: 16px; }
+.sopa td { border: 1px solid var(--ink); text-align: center; padding: 3px 0; line-height: 1.25; }
+.sopa-list { font-family: var(--f-label); font-size: 12px; letter-spacing: .08em; text-align: center; margin: 0; }
+.card { border: 3px double var(--ink); padding: 12px; display: grid; gap: 7px; }
+.card .line { display: flex; gap: 8px; align-items: flex-end; font-family: var(--f-label); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.card .line i { flex: 1; border-bottom: 1px solid var(--ink); height: 18px; }
+@media screen and (max-width: 820px) {
+  .p4 { grid-template-columns: minmax(0, 1fr); }
+  .p4 > * + * { border-left: 0; padding-left: 0; border-top: 1px solid var(--ink); padding-top: 14px; }
+  .front, .split, .p3, .ad-grid { grid-template-columns: minmax(0, 1fr); }
+  .briefs { border-right: 0; padding-right: 0; border-bottom: 3px double var(--ink); padding-bottom: 14px; }
+  .split .rule-l { border-left: 0; padding-left: 0; border-top: 1px solid var(--ink); padding-top: 14px; }
+  .row4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .row3 { grid-template-columns: minmax(0, 1fr); }
+  .row3 > * + * { border-left: 0; padding-left: 0; border-top: 1px solid var(--ink); padding-top: 14px; }
+}
+@media screen and (max-width: 520px) {
+  .cols2 { columns: 1; }
+  .row4 { grid-template-columns: minmax(0, 1fr); }
+}
+@page { size: A3; margin: 0; }
+@media print {
+  html, body { background: var(--paper); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .desk { padding: 0; gap: 0; display: block; }
+  .sheet { box-shadow: none; max-width: none; break-after: page; break-inside: avoid; padding: 11mm 12mm; background-image: none; }
+  .sheet:last-child { break-after: auto; }
+  .sheet:first-child { zoom: .91; }
+  .sheet:nth-child(2) { zoom: .94; }
+  .box, .ad, figure, .brief, ol.steps li, .qa > div { break-inside: avoid; }
+}
+</style>
+
+<div class="desk" lang="es">
+
+<!-- ======================= PÁGINA 1 ======================= -->
+<article class="sheet">
+  <header class="mast">
+    <h1>La Onda Diaria</h1>
+    <div class="lema">toda la actualidad, en buena frecuencia</div>
+  </header>
+  <div class="dateline">
+    <span>Vol. 1 · <b>N.º 555</b></span>
+    <span>Martes 17 de noviembre de 1964</span>
+    <span><b>Edición especial:</b> manual del usuario</span>
+  </div>
+
+  <div class="front">
+    <aside class="briefs">
+      <div class="brief">
+        <h2 class="h-serif">Tres mandos gobiernan el impulso</h2>
+        <p class="txt">Frecuencia, ciclo útil y amplitud: cada perilla del frente manda sobre una sola cualidad de la señal. El lector hallará en la página 2 la manera de manejarlas sin tropiezo.</p>
+      </div>
+      <div class="brief">
+        <h2 class="h-serif">Ni un solo tornillo en toda la caja</h2>
+        <p class="txt">El mueble, impreso en tres dimensiones, mide 180 por 72 por 105 milímetros. La tapa trasera entra a presión y los potenciómetros quedan sujetos por patillas elásticas.</p>
+      </div>
+      <div class="brief">
+        <h2 class="h-serif">Dos ondas a elegir</h2>
+        <p class="txt">Un conmutador interior decide qué onda sale del aparato: la cuadrada, tal como nace del oscilador, o la triangular, labrada por el integrador.</p>
+      </div>
+      <div class="brief">
+        <h2 class="h-serif">Funciona con cinco voltios</h2>
+        <p class="txt">Le basta una alimentación de 5 V de corriente continua, la misma que entrega una placa Arduino. La señal nunca sobrepasa esa tensión.</p>
+      </div>
+      <div class="brief">
+        <h2 class="h-serif">La señal sale por detrás</h2>
+        <p class="txt">Tres cables asoman por las ranuras del borde inferior de la tapa: alimentación, tierra y señal. No hay enchufes que aflojar ni bornes que apretar.</p>
+      </div>
+      <div class="brief">
+        <h2 class="h-serif">Un oscilograma lo confirma</h2>
+        <p class="txt">Medida en nuestro taller, la onda triangular alcanzó 0,767 voltios de pico a pico a 10,61 hercios, con un ciclo útil del 48 por ciento y sin recorte alguno.</p>
+      </div>
+      <div class="brief">
+        <h2 class="h-serif">Para el taller y para el aula</h2>
+        <p class="txt">El RADIO-555 es un aparato de estudio y demostración. No es un equipo médico, y su salida no debe conectarse al cuerpo.</p>
+      </div>
+    </aside>
+
+    <section class="lead">
+      <figure>
+        <div class="photo"><img src="foto_portada.jpg" alt="El electroestimulador RADIO-555: una caja con forma de radio antigua, con asa, dial, rejilla y tres perillas en columna" width="900" height="705"></div>
+        <figcaption><b>El aparato, de frente.</b> Asa, dial y rejilla de receptor; a la derecha, los tres mandos que gobiernan la señal.</figcaption>
+      </figure>
+      <div>
+        <h2 class="h-sans h-xl">Llega el electroestimulador que se viste de radio</h2>
+        <p class="deck">El RADIO-555 genera impulsos cuadrados y triangulares, se maneja con tres perillas y cabe en cualquier repisa</p>
+        <div class="txt cols2 dropcap">
+          <p>Tiene asa, dial y rejilla, como los receptores que presiden las salas de estar; pero no sintoniza emisora alguna. El Electroestimulador RADIO-555, que hoy presentamos a nuestros lectores, guarda en su interior un generador de impulsos eléctricos de baja tensión, concebido para estudiar y demostrar las señales que emplea la electroestimulación.</p>
+          <p>Su manejo no pide más ciencia que la de girar una perilla. Tres mandos en columna regulan, por este orden, la rapidez de los impulsos, la proporción de tiempo que duran y la altura de la onda. Dentro de la caja, una pequeña placa de montaje aloja un oscilador 555 y un amplificador LM324, que entre los dos fabrican la señal.</p>
+          <p>El aparato se alimenta con 5 voltios y entrega su señal por la parte trasera, lista para ser observada en un osciloscopio. En las páginas interiores encontrará el lector las instrucciones de puesta en marcha, la explicación de lo que ocurre dentro del mueble y, en la página 3, una oferta que no conviene dejar pasar.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="row4">
+    <div class="box fill">
+      <p class="kicker">En esta edición</p>
+      <ul class="plain">
+        <li><b>Pág. 2.</b> Conozca su aparato. Puesta en marcha en cinco pasos. Cómo funciona por dentro. Ficha técnica.</li>
+        <li><b>Pág. 3.</b> El consultorio del técnico. Clasificados. Gran oferta del Osciloscopio Arduino.</li>
+        <li><b>Pág. 4.</b> Cómo abrir el aparato. Cuidados. Pasatiempos.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <p class="kicker">Contenido de la caja</p>
+      <ul class="plain">
+        <li>Un Electroestimulador RADIO-555, montado y probado.</li>
+        <li>Tres cables de salida: alimentación (+5 V), tierra (GND) y señal.</li>
+        <li>Este manual.</li>
+      </ul>
+    </div>
+    <div class="box heavy aviso">
+      <h3>Aviso importante</h3>
+      <p class="txt">Aparato <b>experimental y didáctico</b>. No es un equipo médico ni está aislado para usarse sobre personas. <b>No conecte la salida al cuerpo.</b></p>
+    </div>
+    <div class="box fill" style="text-align:center">
+      <p class="kicker">Anuncio · pág. 3</p>
+      <p class="h-sans h-l" style="margin-bottom:4px">¿Y cómo se ve una onda?</p>
+      <p style="font-style:italic">Con el Osciloscopio Arduino, de obsequio para nuestros lectores.</p>
+    </div>
+  </div>
+</article>
+
+<!-- ======================= PÁGINA 2 ======================= -->
+<article class="sheet">
+  <div class="folio"><span>Página 2</span><span class="name">La Onda Diaria</span><span>Martes 17 de noviembre de 1964</span></div>
+  <h2 class="banner">Instrucciones de uso</h2>
+
+  <div class="split">
+    <section>
+      <p class="kicker">Lámina primera</p>
+      <h3 class="h-serif h-l">Conozca su aparato</h3>
+      <div class="plate">
+        <svg viewBox="0 0 560 292" role="img" aria-label="Vista frontal del RADIO-555 con sus partes señaladas: asa, dial, rejilla y los tres mandos P1 frecuencia, P2 ciclo útil y P3 amplitud">
+          <rect class="ink" x="124" y="22" width="192" height="64" rx="16" stroke-width="11"/>
+          <rect class="ink pp" x="40" y="60" width="360" height="210" rx="20" stroke-width="3"/>
+          <rect class="ink" x="48" y="68" width="344" height="194" rx="14" stroke-width="1"/>
+          <rect class="solid" x="74" y="270" width="28" height="6"/><rect class="solid" x="338" y="270" width="28" height="6"/>
+          <!-- dial -->
+          <rect class="ink" x="64" y="80" width="196" height="42" rx="4" stroke-width="2"/>
+          <path class="ink" stroke-width="1" d="M76 91H248"/>
+          <path class="ink" stroke-width="1.6" d="M76 98V114M84 106V114M92 106V114M100 106V114M108 98V114M116 106V114M124 106V114M132 106V114M140 98V114M148 106V114M156 106V114M164 106V114M172 98V114M180 106V114M188 106V114M196 106V114M204 98V114M212 106V114M220 106V114M228 106V114M236 98V114M244 106V114"/>
+          <!-- rejilla -->
+          <path class="ink" stroke-width="4" d="M67 143H121M67 153H121M67 163H121M67 173H121M67 183H121M67 193H121M67 203H121M67 213H121M67 223H121M67 233H121M67 243H121M135 143H189M135 153H189M135 163H189M135 173H189M135 183H189M135 193H189M135 203H189M135 213H189M135 223H189M135 233H189M135 243H189M203 143H257M203 153H257M203 163H257M203 173H257M203 183H257M203 193H257M203 203H257M203 213H257M203 223H257M203 233H257M203 243H257"/>
+          <!-- mandos -->
+          <g>
+            <circle class="ink" cx="336" cy="106" r="22" stroke-width="5" stroke-dasharray="1.4 6.3"/>
+            <circle class="ink pp" cx="336" cy="106" r="16" stroke-width="2.6"/><circle class="ink" cx="336" cy="106" r="10" stroke-width="1.4"/><path class="ink" stroke-width="3" d="M336 103V93"/>
+            <circle class="ink" cx="336" cy="166" r="22" stroke-width="5" stroke-dasharray="1.4 6.3"/>
+            <circle class="ink pp" cx="336" cy="166" r="16" stroke-width="2.6"/><circle class="ink" cx="336" cy="166" r="10" stroke-width="1.4"/><path class="ink" stroke-width="3" d="M336 163V153"/>
+            <circle class="ink" cx="336" cy="226" r="22" stroke-width="5" stroke-dasharray="1.4 6.3"/>
+            <circle class="ink pp" cx="336" cy="226" r="16" stroke-width="2.6"/><circle class="ink" cx="336" cy="226" r="10" stroke-width="1.4"/><path class="ink" stroke-width="3" d="M336 223V213"/>
+          </g>
+          <!-- llamadas -->
+          <path class="ink" stroke-width="1.2" d="M362 106H418M362 166H418M362 226H418"/>
+          <text class="t1" x="424" y="104">P3 · AMPLITUD</text><text class="t2" x="424" y="119">altura de la onda</text>
+          <text class="t1" x="424" y="164">P2 · CICLO ÚTIL</text><text class="t2" x="424" y="179">duración del impulso</text>
+          <text class="t1" x="424" y="224">P1 · FRECUENCIA</text><text class="t2" x="424" y="239">impulsos por segundo</text>
+          <circle class="solid" cx="220" cy="27" r="10"/><text class="tb" x="220" y="31" text-anchor="middle">A</text>
+          <circle class="solid" cx="246" cy="91" r="10"/><text class="tb" x="246" y="95" text-anchor="middle">B</text>
+          <circle class="ink pp" cx="162" cy="193" r="13" stroke-width="0"/><circle class="solid" cx="162" cy="193" r="10"/><text class="tb" x="162" y="197" text-anchor="middle">C</text>
+          <circle class="solid" cx="88" cy="281" r="8"/><text class="tb" x="88" y="285" text-anchor="middle">D</text>
+        </svg>
+      </div>
+      <dl class="legend">
+        <dt>A</dt><dd>Asa para el transporte.</dd>
+        <dt>B</dt><dd>Dial de adorno, como el de los receptores; no marca nada.</dd>
+        <dt>C</dt><dd>Rejilla de adorno. Es ciega: la caja queda cerrada.</dd>
+        <dt>D</dt><dd>Patas de apoyo.</dd>
+        <dt>Detrás</dt><dd>Tapa a presión. Por tres ranuras de su borde inferior salen los cables. Cada ranura lleva grabado su símbolo: <b>+</b> para la alimentación (+5 V), <b>−</b> para la tierra (GND) y un pequeño impulso para la señal.</dd>
+      </dl>
+    </section>
+
+    <section class="rule-l">
+      <p class="kicker">Para el estreno</p>
+      <h3 class="h-serif h-l">Puesta en marcha en cinco pasos</h3>
+      <ol class="steps">
+        <li><div class="txt">Coloque el aparato sobre una mesa firme y seca, con los tres cables traseros a la vista.</div></li>
+        <li><div class="txt">Gire el mando de <b>amplitud (P3)</b> hasta su mínimo. Así la señal arranca casi desde cero.</div></li>
+        <li><div class="txt">Conecte los cables de <b>+5 V</b> y <b>GND</b> a una fuente de 5 V de corriente continua; sirven los pines 5V y GND de una placa Arduino. No emplee tensiones mayores.</div></li>
+        <li><div class="txt">Lleve el cable de <b>señal</b> a la entrada de su osciloscopio y una la tierra del instrumento con la del aparato.</div></li>
+        <li><div class="txt">Suba la amplitud poco a poco y ajuste frecuencia y ciclo útil a su gusto. Tras mover un mando, conceda a la onda uno o dos segundos para asentarse.</div></li>
+      </ol>
+      <div class="box heavy aviso" style="margin-top:14px">
+        <h3>Precauciones</h3>
+        <p class="txt">Este aparato produce señales para estudiarlas con instrumentos de medida. <b>No conecte su salida al cuerpo</b> ni a electrodos colocados sobre personas o animales. Aliméntelo únicamente con 5 V de corriente continua, manténgalo lejos del agua y no retire la tapa mientras esté conectado.</p>
+      </div>
+    </section>
+  </div>
+
+  <div class="row3">
+    <section>
+      <p class="kicker">Lección práctica</p>
+      <h3 class="h-serif h-m">Los tres mandos, uno por uno</h3>
+      <div class="txt">
+        <p><b>P1, frecuencia.</b> Fija cuántos impulsos nacen cada segundo. En las pruebas de nuestro taller el aparato fue de 4,773 a 541,4 hercios. Tenga presente que, al subir la frecuencia, la onda triangular se hace más pequeña.</p>
+        <p><b>P2, ciclo útil.</b> Reparte el tiempo de cada impulso entre su parte alta y su parte baja; en las pruebas fue del 49,6 al 99,3 por ciento. Al moverlo se corre también la frecuencia; es propio de este oscilador y no señal de avería.</p>
+        <p><b>P3, amplitud.</b> Regula la altura de la onda que sale, sea cuadrada o triangular. En su máximo la cuadrada alcanza unos 4,1 voltios de pico a pico; en su mínimo queda un residuo de 14,6 milivoltios.</p>
+      </div>
+      <figure style="margin-top:12px">
+        <div class="photo"><img src="foto_interior.jpg" alt="Interior de la caja visto por detrás, con los tres potenciómetros a la izquierda y el alojamiento de la miniplaca a la derecha" width="800" height="638"></div>
+        <figcaption><b>Por dentro.</b> Visto desde atrás: a la izquierda, los tres potenciómetros; a la derecha, el sitio de la miniplaca.</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <p class="kicker">Lámina segunda</p>
+      <h3 class="h-serif h-m">Cómo funciona por dentro</h3>
+      <div class="plate">
+        <svg viewBox="0 0 360 366" role="img" aria-label="Diagrama de bloques: el oscilador 555 se divide en dos ramas, la de onda cuadrada, directa, y la de onda triangular, que pasa por el seguidor y el integrador; el conmutador elige una y el mando de amplitud P3 fija su altura antes de la salida">
+          <g class="ink" stroke-width="2">
+            <rect x="95" y="8" width="170" height="36"/>
+            <rect x="190" y="72" width="160" height="34"/>
+            <rect x="190" y="122" width="160" height="34"/>
+            <rect x="105" y="240" width="150" height="34"/>
+            <rect x="85" y="290" width="190" height="36"/>
+            <path d="M180 44V58M90 58H270M90 58V160M270 58V68M270 106V118M270 156V160"/>
+            <path d="M90 214V226M270 214V226M90 226H270M180 226V236M180 274V286M180 326V338"/>
+          </g>
+          <path class="solid" d="M270 72l-5-9h10zM270 122l-5-9h10zM180 240l-5-9h10zM180 290l-5-9h10zM180 344l-5-9h10z"/>
+          <text class="t1" x="180" y="31" text-anchor="middle">OSCILADOR 555</text>
+          <text class="t1" x="270" y="94" text-anchor="middle">SEGUIDOR (LM324)</text>
+          <text class="t1" x="270" y="144" text-anchor="middle">INTEGRADOR (LM324)</text>
+          <text class="t1" x="180" y="262" text-anchor="middle">CONMUTADOR</text>
+          <text class="t1" x="180" y="313" text-anchor="middle">MANDO DE AMPLITUD · P3</text>
+          <text class="t1" x="180" y="361" text-anchor="middle">SALIDA</text>
+          <g class="ink" stroke-width="2.4">
+            <path d="M46 192v-24h22v24h22v-24h22v24h22"/>
+            <path d="M226 192l22-24l22 24l22-24l22 24"/>
+          </g>
+          <text class="t2" x="90" y="208" text-anchor="middle">rama de onda cuadrada</text>
+          <text class="t2" x="270" y="208" text-anchor="middle">rama de onda triangular</text>
+        </svg>
+      </div>
+      <div class="txt" style="margin-top:8px">
+        <p><b>El oscilador.</b> Un circuito integrado 555 carga y descarga un condensador sin descanso, y de ese vaivén nace una onda cuadrada. Los mandos P1 y P2 alteran las resistencias de carga y, con ellas, el ritmo y la proporción del impulso.</p>
+        <p><b>Las dos ramas.</b> A la salida del oscilador el camino se bifurca. Por una rama la onda cuadrada sigue tal como nació. Por la otra, un seguidor la copia con fuerza bastante y un integrador la va sumando en un condensador: mientras el impulso está en alto la salida baja en línea recta, y sube cuando está en bajo. Así se labra la onda triangular.</p>
+        <p><b>El conmutador y el mando de amplitud.</b> El conmutador interior elige cuál de las dos ramas llega a la salida. Al final del camino, P3 reparte la tensión como un divisor y fija la altura de la onda elegida.</p>
+      </div>
+    </section>
+
+    <section>
+      <p class="kicker">Para el archivo</p>
+      <h3 class="h-serif h-m">Ficha técnica</h3>
+      <table class="ficha">
+        <tr><th>Alimentación</th><td>5 V c.c.</td></tr>
+        <tr><th>Ondas</th><td>Cuadrada y triangular</td></tr>
+        <tr><th>Oscilador</th><td>NE555, montaje astable</td></tr>
+        <tr><th>Amplificador</th><td>LM324: seguidor e integrador</td></tr>
+        <tr><th>Frecuencia</th><td>4,773 a 541,4 Hz</td></tr>
+        <tr><th>Ciclo útil</th><td>49,6 a 99,3 %</td></tr>
+        <tr><th>Cuadrada</th><td>Hasta 4,1 V pico a pico, aprox.</td></tr>
+        <tr><th>Triangular</th><td>0,767 V pico a pico a 10,61 Hz</td></tr>
+        <tr><th>Al mínimo</th><td>Residuo de 14,6 mV pico a pico</td></tr>
+        <tr><th>Salida</th><td>Siempre entre 0 y 5 V</td></tr>
+        <tr><th>Mandos</th><td>3 potenciómetros de 16 mm</td></tr>
+        <tr><th>Caja</th><td>180 × 72 × 105 mm, a presión</td></tr>
+        <tr><th>Interior</th><td>Miniplaca de 83 × 56 mm</td></tr>
+        <tr><th>Cables</th><td>+5 V, GND y señal</td></tr>
+      </table>
+    </section>
+  </div>
+</article>
+
+<!-- ======================= PÁGINA 3 ======================= -->
+<article class="sheet">
+  <div class="folio"><span>Página 3</span><span class="name">La Onda Diaria</span><span>Martes 17 de noviembre de 1964</span></div>
+
+  <div class="p3">
+    <section style="display:grid;gap:16px;align-content:start">
+      <div>
+        <p class="kicker">Cartas de los lectores</p>
+        <h3 class="h-sans h-l">El consultorio del técnico</h3>
+        <div class="qa txt">
+          <div><p class="q">«La onda me sale cortada por abajo, como si le faltara un trozo.»</p><p>La señal está tocando el límite del amplificador. Retoque el ajuste interior de centrado hasta que la onda quede en mitad de la pantalla.</p></div>
+          <div><p class="q">«Muevo una perilla y la onda se desordena un instante.»</p><p>Es lo natural. El condensador de acople necesita uno o dos segundos para acomodarse a la nueva señal; después la onda vuelve sola a su centro.</p></div>
+          <div><p class="q">«Subo la frecuencia y la triangular encoge.»</p><p>No hay avería. El integrador dispone de menos tiempo en cada impulso y la onda sube menos. Si la quiere mayor, baje la frecuencia o aumente la amplitud. Hacia las frecuencias más altas la triangular llega a hacerse muy pequeña.</p></div>
+          <div><p class="q">«Mi triangular sube más despacio de lo que baja.»</p><p>El ciclo útil no está en la mitad. Gire P2 hasta que las dos rampas duren lo mismo.</p></div>
+          <div><p class="q">«Conecto todo y no veo señal alguna.»</p><p>Revise, por este orden: que lleguen los 5 V, que la tierra del osciloscopio esté unida a la del aparato y que el mando de amplitud no se haya quedado en cero.</p></div>
+        </div>
+      </div>
+      <div class="clasif">
+        <h4>Clasificados</h4>
+        <p><b>SE OFRECE</b> integrador de poco uso. Entrega triangulares puntuales. Abstenerse derivadores.</p>
+        <p><b>PERDIDO</b> ciclo útil del 50 %. Se gratificará su devolución. Razón: diodo 1N4148.</p>
+        <p><b>COMPRO</b> condensadores de 10 µF, código 106. Pago al contado. Urge.</p>
+      </div>
+      <div class="box fill">
+        <p class="kicker">Pequeño diccionario del lector</p>
+        <dl class="legend" style="margin-top:4px">
+          <dt>Frecuencia</dt><dd>Número de impulsos por segundo. Se mide en hercios (Hz).</dd>
+          <dt>Ciclo útil</dt><dd>Parte de cada impulso que la señal pasa en alto, en tanto por ciento.</dd>
+          <dt>Amplitud</dt><dd>Altura de la onda, de su punto más bajo al más alto. Se mide en voltios.</dd>
+          <dt>Onda cuadrada</dt><dd>La que salta de golpe entre dos niveles.</dd>
+          <dt>Onda triangular</dt><dd>La que sube y baja en rampas rectas.</dd>
+          <dt>Osciloscopio</dt><dd>Instrumento que dibuja la señal eléctrica a lo largo del tiempo.</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="ad">
+      <div class="pub">— Publicidad —</div>
+      <p class="cry">¡Vea la electricidad con sus propios ojos!</p>
+      <h3 class="brand">Osciloscopio Arduino<small>DOS CANALES · SIN INSTALACIÓN</small></h3>
+      <p class="sub">El programa que convierte su placa Arduino y su computadora en un osciloscopio completo. Con él se afinó el RADIO-555 que usted tiene en las manos.</p>
+      <figure>
+        <div class="photo"><img src="oscilograma.jpg" alt="Oscilograma de la onda triangular del RADIO-555 sobre la retícula del osciloscopio" width="900" height="265"></div>
+        <figcaption><b>Oscilograma auténtico.</b> La onda triangular del RADIO-555 a 10,61 Hz y 0,767 V pico a pico, tal como la dibujó el Osciloscopio Arduino.</figcaption>
+      </figure>
+      <div class="ad-grid">
+        <ul class="stars">
+          <li><span><b>DOS CANALES</b> a la vez, con hasta 100 000 muestras por segundo.</span></li>
+          <li><span><b>MIDE SOLO:</b> pico a pico, máximo, mínimo, medio, eficaz, frecuencia, período y ciclo útil.</span></li>
+          <li><span><b>TRES VISTAS:</b> voltaje contra tiempo, espectro de frecuencias y modo X-Y.</span></li>
+          <li><span><b>DISPARO</b> por flanco de subida o de bajada, con nivel a su elección.</span></li>
+          <li><span><b>CURSORES</b> que se arrastran sobre la pantalla para medir a mano.</span></li>
+          <li><span><b>GENERADOR DE PRUEBA</b> incorporado: onda cuadrada y PWM por el pin D3.</span></li>
+          <li><span><b>GUARDA</b> los datos en CSV y la pantalla en imagen PNG.</span></li>
+          <li><span><b>MODO DEMOSTRACIÓN:</b> pruébelo antes de conectar placa alguna.</span></li>
+        </ul>
+        <div style="display:grid;gap:14px">
+          <div class="offer">
+            <span class="tag">Oferta para nuestros lectores</span>
+            <span class="big">¡De obsequio!*</span>
+            <span class="with">con su Electroestimulador RADIO-555</span>
+          </div>
+          <div>
+            <p class="kicker">Listo en tres pasos</p>
+            <ol class="steps">
+              <li><div>Cargue el programa <b>osciloscopio.ino</b> en su Arduino Uno, Nano o Duemilanove.</div></li>
+              <li><div>Abra <b>osciloscopio.html</b> en Chrome o Edge.</div></li>
+              <li><div>Pulse <b>«Conectar Arduino»</b> y comience a medir.</div></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      <div class="coupon">
+        <span class="c-title">Cupón de obsequio</span>
+        <span>Vale por un Osciloscopio Arduino (programa y firmware) al adquirir un Electroestimulador RADIO-555.</span>
+        <span class="line">Nombre <i></i></span>
+        <span class="line">Localidad <i></i></span>
+      </div>
+      <p class="fine">Usted pone la placa Arduino y el cable USB. Entradas de 0 a 5 V únicamente; para tensiones mayores emplee un divisor resistivo.</p>
+      <p class="tiny">* La compra no incluye el microcontrolador Arduino. No nos hacemos responsables de quemaduras, daños, explosiones ni control mental.</p>
+    </section>
+  </div>
+</article>
+
+<!-- ======================= PÁGINA 4 ======================= -->
+<article class="sheet">
+  <div class="folio"><span>Página 4</span><span class="name">La Onda Diaria</span><span>Martes 17 de noviembre de 1964</span></div>
+  <h2 class="banner">Cuidados y pasatiempos</h2>
+
+  <div class="p4">
+    <section>
+      <div>
+        <p class="kicker">Lámina tercera</p>
+        <h3 class="h-serif h-l">El mueble, pieza por pieza</h3>
+        <figure>
+          <div class="photo"><img src="foto_despiece.jpg" alt="Despiece del RADIO-555: la tapa trasera, la miniplaca, la caja y las tres perillas separadas" width="900" height="603"></div>
+          <figcaption><b>Despiece.</b> De izquierda a derecha: la tapa trasera, la miniplaca, la caja y las tres perillas. Todo encaja a presión.</figcaption>
+        </figure>
+      </div>
+      <div>
+        <p class="kicker">Con cuidado y sin herramientas</p>
+        <h3 class="h-serif h-m">Cómo abrir y cerrar la tapa</h3>
+        <ol class="steps">
+          <li><div class="txt">Desconecte la alimentación antes de tocar nada.</div></li>
+          <li><div class="txt">Apoye el aparato con el frente hacia abajo sobre un paño doblado, para no rayar las perillas.</div></li>
+          <li><div class="txt">Tire de la tapa trasera con las yemas de los dedos, sin palancas: está sujeta a presión. Acompañe los tres cables para no forzarlos.</div></li>
+          <li><div class="txt">Para cerrar, acomode cada cable en su ranura y presione el contorno de la tapa hasta que encaje.</div></li>
+        </ol>
+      </div>
+      <div>
+        <h3 class="h-serif h-m">Los dos ajustes interiores</h3>
+        <div class="txt">
+          <p>En la miniplaca hay dos ajustes que el usuario puede tocar. El <b>conmutador de onda</b> elige entre la cuadrada y la triangular. El <b>ajuste de centrado</b>, un potenciómetro pequeño, sube o baja la onda triangular hasta dejarla en mitad de la pantalla; gírelo despacio y mirando el osciloscopio. Lo demás no necesita ajuste alguno.</p>
+        </div>
+      </div>
+      <div class="box fill">
+        <p class="kicker">El tiempo en su taller</p>
+        <p class="txt"><b>Mañana:</b> cielo despejado y onda cuadrada de flancos firmes. <b>Tarde:</b> rampas suaves de componente triangular. <b>Probabilidad de recorte:</b> escasa, salvo centrado mal ajustado.</p>
+      </div>
+    </section>
+
+    <section>
+      <figure>
+        <div class="photo"><img src="foto_trasera.jpg" alt="Parte trasera del RADIO-555, con la tapa a presión y las tres ranuras para los cables en su borde inferior" width="800" height="665"></div>
+        <figcaption><b>La trasera.</b> En el borde inferior de la tapa, las tres ranuras de los cables con sus símbolos grabados.</figcaption>
+      </figure>
+      <div>
+        <p class="kicker">Para que dure</p>
+        <h3 class="h-serif h-m">Cuidado y conservación</h3>
+        <ul class="plain">
+          <li>Límpielo con un paño seco. Nada de agua, alcohol ni disolventes.</li>
+          <li>Guárdelo lejos del sol y de las estufas: el mueble es de plástico impreso y el calor puede deformarlo.</li>
+          <li>No tire de los cables traseros ni cuelgue el aparato de ellos.</li>
+          <li>Gire las perillas con suavidad; al llegar al tope, no fuerce.</li>
+          <li>Si va a guardarlo mucho tiempo, desconéctelo de la alimentación.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <p class="kicker">Pasatiempos</p>
+        <h3 class="h-sans h-m" style="text-align:center;margin-bottom:2px">Sopa de letras</h3>
+        <p style="font-style:italic;text-align:center;font-size:14px;margin:0">Diez palabras de este manual, de izquierda a derecha, de arriba abajo o en diagonal.</p>
+        <table class="sopa" aria-label="Sopa de letras"><tr><td>C</td><td>M</td><td>C</td><td>V</td><td>S</td><td>C</td><td>C</td><td>P</td><td>I</td><td>V</td><td>E</td><td>B</td></tr><tr><td>A</td><td>O</td><td>T</td><td>G</td><td>R</td><td>V</td><td>N</td><td>B</td><td>R</td><td>C</td><td>I</td><td>P</td></tr><tr><td>M</td><td>F</td><td>R</td><td>E</td><td>C</td><td>U</td><td>E</td><td>N</td><td>C</td><td>I</td><td>A</td><td>N</td></tr><tr><td>P</td><td>E</td><td>V</td><td>I</td><td>L</td><td>U</td><td>A</td><td>P</td><td>C</td><td>T</td><td>D</td><td>S</td></tr><tr><td>L</td><td>O</td><td>S</td><td>C</td><td>I</td><td>L</td><td>A</td><td>D</td><td>O</td><td>R</td><td>I</td><td>P</td></tr><tr><td>I</td><td>J</td><td>V</td><td>P</td><td>O</td><td>O</td><td>S</td><td>G</td><td>F</td><td>O</td><td>A</td><td>R</td></tr><tr><td>T</td><td>T</td><td>O</td><td>V</td><td>F</td><td>N</td><td>E</td><td>I</td><td>V</td><td>U</td><td>L</td><td>A</td></tr><tr><td>U</td><td>O</td><td>L</td><td>F</td><td>O</td><td>N</td><td>A</td><td>A</td><td>M</td><td>L</td><td>U</td><td>D</td></tr><tr><td>D</td><td>N</td><td>T</td><td>A</td><td>S</td><td>U</td><td>O</td><td>J</td><td>C</td><td>H</td><td>E</td><td>I</td></tr><tr><td>E</td><td>D</td><td>I</td><td>P</td><td>S</td><td>O</td><td>H</td><td>E</td><td>R</td><td>C</td><td>I</td><td>O</td></tr><tr><td>J</td><td>A</td><td>O</td><td>B</td><td>P</td><td>E</td><td>R</td><td>I</td><td>L</td><td>L</td><td>A</td><td>R</td></tr><tr><td>T</td><td>J</td><td>I</td><td>N</td><td>T</td><td>E</td><td>G</td><td>R</td><td>A</td><td>D</td><td>O</td><td>R</td></tr></table>
+        <p class="sopa-list">FRECUENCIA · INTEGRADOR · OSCILADOR · AMPLITUD · PERILLA · VOLTIO · HERCIO · RADIO · ONDA · DIAL</p>
+      </div>
+      <div class="card">
+        <p class="kicker" style="margin:0;text-align:center">Tarjeta del propietario</p>
+        <span class="line">Propietario <i></i></span>
+        <span class="line">Fecha de compra <i></i></span>
+        <span class="line">Aparato n.º <i></i></span>
+      </div>
+    </section>
+  </div>
+  <div class="colofon">La Onda Diaria · Edición especial · Manual del usuario del Electroestimulador RADIO-555 · Consérvese junto al aparato</div>
+</article>
+
+</div>
+
+</body>
+</html>
